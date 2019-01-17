@@ -27,10 +27,29 @@
 		</div>
 		<div id="addSprintButton">
 			<button class="butt" type="button" id="show-create" onclick="showCreateSprint()">New Sprint</button>
+			<div id="altModal" class="modal">
+		  <!-- Modal content -->
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <form>
+		    	<input type="text" >
+		    	<select>
+		    		<option>Feature</option>
+		    		<option>Bug</option>
+		    		<option>Task</option>
+		    	</select>
+		    	<input type="text" id="assignee">
+		    	<br>Description<br>
+		    	<input type="text">
+		    	<input type="text" name="commentz">
+		    	<button type="button" class="butt" id="addpls">Add</button>
+		    </form>
+		  </div>
+		</div>
 		</div>
 		<div id="LatestSprint">
 			<h2 id="curr-s">Current Sprint: </h2>
-			<button class="butt" type="button">Add Issue</button>
+			<button class="butt" id="savebtn" onclick="SaveButton()" type="button">Add Issue</button>
 			<table>
 				<tr>
 				<th>Features</th>

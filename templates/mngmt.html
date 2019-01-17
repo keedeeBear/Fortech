@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Project Manager</title>
+	<link rel="stylesheet" type="text/css" href="../style/mngmt.css">
+</head>
+<body>
+	<div id="title+menu">
+		<h1 id="ProjNamm"></h1>
+		<div class="navbar">
+			<a href="mngmt.html">Project Overview</a>
+			<a href="search.html">Search Sprint</a>
+			<a href="filter.html">Filter Sprints</a>
+		</div>
+	</div>
+	<div class="mainbody">
+		<div id="myModal" class="modal">
+		  <!-- Modal content -->
+		  <div class="modal-content">
+		    <span class="close">&times;</span>
+		    <form>
+		    	Sprint Name:<br>
+		    	<input id="addsprint" type="text">
+		    	<button type="button" class="butt" id="addpls">Add</button>
+		    </form>
+		  </div>
+		</div>
+		<div id="addSprintButton">
+			<button class="butt" type="button" id="show-create" onclick="showCreateSprint()">New Sprint</button>
+		</div>
+		<div id="LatestSprint">
+			<h2 id="curr-s">Current Sprint: </h2>
+			<button class="butt" type="button">Add Issue</button>
+			<table>
+				<tr>
+				<th>Features</th>
+				<th>Bugs</th>
+				<th>Tasks</th>
+				<th>Feedback!</th>
+				</tr>
+			</table>
+		</div>
+		<br>
+		<div id="PreviousSprints">
+			<button class="butt" id="prev" type="button" onclick="sendToPreviousSprints()">See Previous Sprints</button>
+		</div>
+	</div>
+</body>
+<script type="text/javascript" src="../utils/utils.js"></script>
+</html>

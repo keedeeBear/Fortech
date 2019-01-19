@@ -1,3 +1,5 @@
+//main classes for the app//
+
 function Comments(id, name){
 	this.id = RandomId();
 	this.name = name;
@@ -34,7 +36,7 @@ function User(name){
 
 
 
-//
+//using repo_users to have on hand the user data list
 var repo_users = {};
 try{
 	
@@ -47,6 +49,7 @@ catch{
 }
 
 var project = new  Project();
+
 function RandomId(){
 	localStorage.setItem("id", parseInt(localStorage.getItem("id"))+ 1);
 	return localStorage.getItem("id");
@@ -66,7 +69,7 @@ function Login(){
 catch{}
 	localStorage.setItem("projectName", projn);
 }
-
+//note: I tried to debug at some point using try-catches, and it works now, so I guess it's daijobu
 try{
 (function()
 {
@@ -74,6 +77,7 @@ try{
 }());
 }
 catch{}
+
 function SaveButton(){
 	var modal = document.getElementById('altModal');//pop-up new
 	var btn = document.getElementById("savebtn");// Get the button that opens the modal
@@ -90,12 +94,13 @@ function SaveButton(){
 	  }
 	}
 }
-
+//an array with some usernames, feel free to change them
 var usernames = [];
 
 var user1 = new User("MrSandman");
 var user2 = new User("Freya");
 var user3 = new User("Loki");
+//adding the users onto their proper repo
 repo_users[user1.id] = user1.name;
 repo_users[user2.id] = user2.name;
 repo_users[user3.id] = user3.name;
@@ -103,28 +108,24 @@ repo_users[user3.id] = user3.name;
 usernames.push(user1.name);
 usernames.push(user2.name);
 usernames.push(user3.name);
-
+//repos for the rest of the "classes"
 var repo_issues = {};
 
 var repo_sprints = {};
 
 var repo_comments = {};
 
-var currSprint = 0;//id of the sprint
+var currSprint = 0;//id of the sprint shown on page
 
-function showCreateSprint(){
-//pop-up for new sprint
+var statuses = ["New", "In progress", "Feedback", "Rework", "Resolved", "Ready for testing"]; //list of possible statuses
+function showCreateSprint(){//same modal as before, used this for the rest of the page since it's trustowrthy
 var modal = document.getElementById('myModal');
-// Get the button that opens the modal
 var btn = document.getElementById("show-create");
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
-// When the user clicks on the button, open the modal 
 btn.onclick = function() {
   modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
 }
@@ -135,6 +136,7 @@ window.onclick = function(event) {
   }
 }
 }
+//a bit of the 'sorting' - you can scroll through the sprints in the order you put em on the app
 function sendToPreviousSprints(){
 	var k = 0;
 	for (var i in repo_sprints)
@@ -159,7 +161,7 @@ function sendToPreviousSprints(){
 	}
 
 }
-
+//see comment above ^
 function sendToNextSprints(){
 	var k = 0;
 	for (var i in repo_sprints)
@@ -183,6 +185,7 @@ function sendToNextSprints(){
 		w++;
 	}
 }
+//a function to make sure the proper sprint is shown
 function reconstruct(){
 	document.getElementById("myModal").style.display = "none";
 	document.getElementById("LatestSprint").style.display = "block";
@@ -204,7 +207,8 @@ var newSprint = document.getElementById("addpls").addEventListener("click", func
 });
 }
 catch{}
-var statuses = ["New", "In progress", "Feedback", "Rework", "Resolved", "Ready for testing"];
+
+//same as above, but for the issues
 function reconstructIssues(){
 	document.getElementById("altModal").style.display = "none";
 		document.getElementById("modalUP").style.display = "none";
@@ -221,6 +225,7 @@ function reconstructIssues(){
 	document.getElementById("tableiss").innerHTML = str;
 
 }
+//cool function I found while researching, thought it'd be neat to have
 try{
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
@@ -322,6 +327,7 @@ document.addEventListener("click", function (e) {
 autocomplete(document.getElementById("assignee"), usernames);
 }
 catch{}
+//since I had to work with id's and show names, I needed this to have the two on hand
 function Findk (obj, value){
 	var key = null;
 	for (var prop in obj)
@@ -423,17 +429,17 @@ if (done == 1)
 console.log(repo_issues[i]);
 reconstructIssues();
 });
-function showO(){
+function showO(){ //show the overview side, since I had no time to make separate pages
 	document.getElementById("overview").style.display = "block";
 	document.getElementById("filter").style.display = "none";
 }
-function showF(){
+function showF(){ //same as comment above, for filter section
 	document.getElementById("overview").style.display = "none";
 	document.getElementById("filter").style.display = "block";
 	autocomplete(document.getElementById("filtername"), statuses);
 }
 
-function findelemnts(){
+function findelemnts(){//show former sprints that fit the bill
 	var valinput = document.getElementById("filtername").value;
 	var s = "";
 	for(var i in repo_issues)

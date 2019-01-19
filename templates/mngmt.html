@@ -32,17 +32,22 @@
 		  <div class="modal-content">
 		    <span class="close">&times;</span>
 		    <form>
-		    	<input type="text" >
-		    	<select>
-		    		<option>Feature</option>
-		    		<option>Bug</option>
-		    		<option>Task</option>
+		    	<br><p>Name:</p><br>
+		    	<input type="text" id="issuename">
+		    	<br><p>Type:</p><br>
+		    	<select id="issuetype">
+		    		<option><p>Feature</p></option>
+		    		<option><p>Bug</p></option>
+		    		<option><p>Task</p></option>
 		    	</select>
-		    	<input type="text" id="assignee">
-		    	<br>Description<br>
-		    	<input type="text">
-		    	<input type="text" name="commentz">
-		    	<button type="button" class="butt" id="addpls">Add</button>
+		    	<br><p>Assignee:</p><br>
+		    	<div class="autocomplete">
+		    	<input type="text" id="assignee"></div>
+		    	<br><p>Description:</p><br>
+		    	<input type="text" id="issuedesc">
+		    	<br><p>Comments:</p><br>
+		    	<input type="text" name="commentz" id="issuecom">
+		    	<button type="button" class="butt" id="issueadd">Add</button>
 		    </form>
 		  </div>
 		</div>
@@ -50,14 +55,9 @@
 		<div id="LatestSprint">
 			<h2 id="curr-s">Current Sprint: </h2>
 			<button class="butt" id="savebtn" onclick="SaveButton()" type="button">Add Issue</button>
-			<table>
-				<tr>
-				<th>Features</th>
-				<th>Bugs</th>
-				<th>Tasks</th>
-				<th>Feedback!</th>
-				</tr>
-			</table>
+		<div id="tableiss">
+			<p>No Issues Yet!</p>
+		</div>
 		</div>
 		<br>
 		<div id="PreviousSprints">

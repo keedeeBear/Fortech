@@ -14,7 +14,7 @@ function Issue(type, name, sprint, createdBy, assignee, description, status, com
 	this.status = status;
 	this.tasks = [];
 	this.comments = [];
-	comments.push(comments);
+	this.comments.push(comments);
 	this.createdAt = createdAt;
 	this.updatedAt = createdAt;
 }
@@ -36,34 +36,51 @@ function User(name){
 
 //
 var repo_users = {};
+try{
+	
+	repo_users[localStorage.getItem("creator")] = localStorage.getItem("user")	;
+
+
+}
+catch{
+
+}
+
 var project = new  Project();
 function RandomId(){
-	return Math.floor((Math.random()*10000) + 1);
+	localStorage.setItem("id", parseInt(localStorage.getItem("id"))+ 1);
+	return localStorage.getItem("id");
 }
 function Login(){
+	localStorage.clear();
 	window.location = "templates/mngmt.html"
 	usern = document.getElementById("username").value;
-	var u = new User(usern);
-	repo_users[u.id] = usern;
-	projn = document.getElementById("projname").value;
+	projn = document.getElementById("login_p").value;
 	localStorage.setItem("user", usern);
+	localStorage.setItem("id", 0);
+	try{
+		var u = new User(usern);
 	localStorage.setItem("creator", u.id);
+
+	}
+catch{}
 	localStorage.setItem("projectName", projn);
 }
+
+try{
 (function()
 {
 	document.getElementById("ProjNamm").innerHTML = "Project name: "+localStorage.getItem("projectName")+"<br>The User logged in is "+localStorage.getItem("user");
 }());
-
-
+}
+catch{}
 function SaveButton(){
 	var modal = document.getElementById('altModal');//pop-up new
 	var btn = document.getElementById("savebtn");// Get the button that opens the modal
-	var span = document.getElementsByClassName("close")[0];// Get the <span> element that closes the modal
+	var span = document.getElementsByClassName("close")[1];// Get the <span> element that closes the modal
 	btn.onclick = function() {// When the user clicks on the button, open the modal
 	  modal.style.display = "block";
 	}
-	console.log(btn);
 	span.onclick = function() {// When the user clicks on <span> (x), close the modal
 	  modal.style.display = "none";
 	}
@@ -118,19 +135,53 @@ window.onclick = function(event) {
   }
 }
 }
-function showFeat(){
-//pop-up to show features, can add?
-}
-function showBugs(){
-//pop-up to show bugs, each bug can have a resolved status or 'Rework' to link to changes, can add?
-}
-function showTasks(){
-//pop-up to show tasks and subtasks, can add?
-}
-function Feedback(){
-//pop-up to allow person to write a comment
-}
 function sendToPreviousSprints(){
+	var k = 0;
+	for (var i in repo_sprints)
+	{
+		if(i == currSprint)
+			break;
+		k++;
+	}
+	console.log(" THIS IS K="+k);
+	var w = 0;
+	for (var i in repo_sprints)
+	{
+		if(w == k-1)
+		{
+			currSprint = i;
+			currSprintName = repo_sprints[i];
+			reconstruct();
+			reconstructIssues();
+			break;
+		}
+		w++;
+	}
+
+}
+
+function sendToNextSprints(){
+	var k = 0;
+	for (var i in repo_sprints)
+	{
+		if(i == currSprint)
+			break;
+		k++;
+	}
+	console.log(" THIS IS K="+k);
+	var w = 0;
+	for (var i in repo_sprints)
+	{
+		if(w == k+1)
+		{
+			currSprint = i;
+			currSprintName = repo_sprints[i];
+			reconstruct();
+			reconstructIssues();
+			break;
+		}
+		w++;
+	}
 }
 function reconstruct(){
 	document.getElementById("myModal").style.display = "none";
@@ -140,6 +191,7 @@ function reconstruct(){
 		document.getElementById("PreviousSprints").style.display = "block";
 	console.log(project.sprints.length);
 }
+try{
 var newSprint = document.getElementById("addpls").addEventListener("click", function(){
 	var name = document.getElementById("addsprint").value;
 	var sprintt = new sprint(name);
@@ -148,24 +200,28 @@ var newSprint = document.getElementById("addpls").addEventListener("click", func
 	currSprint = sprintt.id;
 	repo_sprints[sprintt.id] = currSprintName; 
 	reconstruct();
+	reconstructIssues();
 });
-
+}
+catch{}
 var statuses = ["New", "In progress", "Feedback", "Rework", "Resolved", "Ready for testing"];
 function reconstructIssues(){
 	document.getElementById("altModal").style.display = "none";
+		document.getElementById("modalUP").style.display = "none";
+
 	var str= "";
 	for (var i in repo_issues){
 		if(repo_issues[i].sprint == currSprint){
 			str+="<p>Type:"+repo_issues[i].type+"; Name:"+repo_issues[i].name+"; Created By:"+repo_users[repo_issues[i].createdBy];
 			str+="; Assignee:"+repo_users[repo_issues[i].assignee]+"; Description:"+repo_issues[i].description;
-			str+="; Status:"+statuses[repo_issues[i].status]+"; Comments:"+repo_comments[repo_issues[i].comments[0]];
-			str+="; Created At:"+repo_issues[i].createdAt+"; Updated At:"+repo_issues[i].updatedAt+"</p><br>";
+			str+="; Status:"+statuses[repo_issues[i].status];
+			str+="; Created At:"+repo_issues[i].createdAt+"; Updated At:"+repo_issues[i].updatedAt+"</p><button id='openUp"+i+"' onclick='OpenModUpdate("+i+")'>Update</button><br>";
 		}
 	}
-	document.getElementById("tableiss").innerHTML(str);
+	document.getElementById("tableiss").innerHTML = str;
 
 }
-
+try{
 function autocomplete(inp, arr) {
   /*the autocomplete function takes two arguments,
   the text field element and an array of possible autocompleted values:*/
@@ -264,7 +320,8 @@ document.addEventListener("click", function (e) {
 }
 
 autocomplete(document.getElementById("assignee"), usernames);
-
+}
+catch{}
 function Findk (obj, value){
 	var key = null;
 	for (var prop in obj)
@@ -279,7 +336,7 @@ function Findk (obj, value){
 	}
 	return key;
 }
-
+try{
 var newIssue = document.getElementById("issueadd").addEventListener("click", function(){
 var n = document.getElementById("issuename").value;//name
 var t = document.getElementById("issuetype").value;//type
@@ -296,4 +353,97 @@ var actis = new Issue(t,n,sp,crb,as,desc,s,com,crat);
 repo_issues[actis.id] = actis;
 reconstructIssues();
 });
+}
+catch{}
 
+function OpenModUpdate(i){
+//pop-up for new sprint
+var modal = document.getElementById('modalUP');
+// Get the button that opens the modal
+var btn = document.getElementById("openUp"+i);
+var str='<span class="close">&times;</span> <form> <br><p>Name:</p><br><input type="hidden" value="'+i+'" id="i_id"> <input value="'+repo_issues[i].name+'"type="text" id="u_issuename"> <br><p>Type:</p><br> <select id="u_issuetype"> <option><p>Feature</p></option> <option><p>Bug</p></option> <option><p>Task</p></option> </select> <br><p>Assignee:</p><br> <div class="autocomplete"> <input value="'+repo_users[repo_issues[i].assignee]+'" type="text" id="u_assignee" placeholder="Enter an existent user name"></div> <br><p>Description:</p><br> <input value="'+repo_issues[i].description+'"type="text" id="u_issuedesc"> <br><p>Comments:</p><br> <input type="text" name="commentz" id="u_issuecom">Is it done? <input type="checkbox" value ="1" id="isDone"><button type="button" class="butt" id="u_updateissue">Update</button> </form>';
+var span = document.getElementsByClassName("close")[2];
+document.getElementById('curr_i').innerHTML = str;
+// When the user clicks on the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+var updateIssue = document.getElementById("u_updateissue").addEventListener("click", function(){
+var n = document.getElementById("u_issuename").value;//name
+var t = document.getElementById("u_issuetype").value;//type
+var as = Findk(repo_users, document.getElementById("u_assignee").value);//assignee
+var desc = document.getElementById("u_issuedesc").value;//description
+var c = new Comments(document.getElementById("u_issuecom").value);//comments
+repo_comments[c.id] = c.name;
+var com = c.id;
+console.log(as);
+
+var i = document.getElementById("i_id").value;
+repo_issues[i].name = n;
+repo_issues[i].type = t;
+repo_issues[i].assignee = as;
+repo_issues[i].description = desc;
+repo_issues[i].comments = com;
+repo_issues[i].updatedAt = new Date().toLocaleString();
+var done = document.getElementById("isDone").value;
+if (document.getElementById("isDone").checked)
+	repo_issues[i].status = 5;
+reconstructIssues();
+});
+}var updateIssue = document.getElementById("u_updateissue").addEventListener("click", function(){
+var n = document.getElementById("u_issuename").value;//name
+var t = document.getElementById("u_issuetype").value;//type
+var as = Findk(repo_users, document.getElementById("u_assignee").value);//assignee
+var desc = document.getElementById("u_issuedesc").value;//description
+var c = new Comments(document.getElementById("u_issuecom").value);//comments
+repo_comments[c.id] = c.name;
+var com = c.id;
+
+var i = document.getElementById("i_id").value;
+repo_issues[i].name = n;
+repo_issues[i].type = t;
+repo_issues[i].assignee = as;
+repo_issues[i].description = desc;
+repo_issues[i].comments = com;
+repo_issues[i].updatedAt = new Date().toLocaleString();
+var done = document.getElementById("isDone").value;
+if (done == 1)
+	repo_issues[i].status = statuses[5];
+console.log(repo_issues[i]);
+reconstructIssues();
+});
+function showO(){
+	document.getElementById("overview").style.display = "block";
+	document.getElementById("filter").style.display = "none";
+}
+function showF(){
+	document.getElementById("overview").style.display = "none";
+	document.getElementById("filter").style.display = "block";
+	autocomplete(document.getElementById("filtername"), statuses);
+}
+
+function findelemnts(){
+	var valinput = document.getElementById("filtername").value;
+	var s = "";
+	for(var i in repo_issues)
+	{
+		if(valinput == statuses[repo_issues[i].status]){
+			s+="<p>Sprint: "+repo_sprints[repo_issues[i].sprint]+"; Type:"+repo_issues[i].type+"; Name:"+repo_issues[i].name+"; Created By:"+repo_users[repo_issues[i].createdBy];
+			s+="; Assignee:"+repo_users[repo_issues[i].assignee]+"; Description:"+repo_issues[i].description;
+			s+="; Status:"+statuses[repo_issues[i].status];
+			s+="; Created At:"+repo_issues[i].createdAt+"; Updated At:"+repo_issues[i].updatedAt+"</p><br>";
+		}
+	}
+	document.getElementById("showfilters").innerHTML = s;
+}

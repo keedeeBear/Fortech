@@ -8,12 +8,11 @@
 	<div id="title+menu">
 		<h1 id="ProjNamm"></h1>
 		<div class="navbar">
-			<a href="mngmt.html">Project Overview</a>
-			<a href="search.html">Search Sprint</a>
-			<a href="filter.html">Filter Sprints</a>
+			<button type="button" onclick="showO()">Project Overview</button>
+			<button type="button" onclick="showF()">Filters</button>
 		</div>
 	</div>
-	<div class="mainbody">
+	<div class="mainbody" id="overview">
 		<div id="myModal" class="modal">
 		  <!-- Modal content -->
 		  <div class="modal-content">
@@ -40,14 +39,38 @@
 		    		<option><p>Bug</p></option>
 		    		<option><p>Task</p></option>
 		    	</select>
-		    	<br><p>Assignee:</p><br>
+		    	<br><p>Assignee: (Example Loki, Freya, MrSandman)</p><br>
 		    	<div class="autocomplete">
-		    	<input type="text" id="assignee"></div>
+		    	<input type="text" id="assignee" placeholder="Enter an existent user name"></div>
 		    	<br><p>Description:</p><br>
 		    	<input type="text" id="issuedesc">
 		    	<br><p>Comments:</p><br>
 		    	<input type="text" name="commentz" id="issuecom">
 		    	<button type="button" class="butt" id="issueadd">Add</button>
+		    </form>
+		  </div>
+		</div>
+		<div id="modalUP" class="modal">
+		  <!-- Modal content -->
+		  <div id ="curr_i" class="modal-content">
+		    <span class="close">&times;</span>
+		    <form>
+		    	<br><p>Name:</p><br>
+		    	<input type="text" id="u_issuename">
+		    	<br><p>Type:</p><br>
+		    	<select id="u_issuetype">
+		    		<option><p>Feature</p></option>
+		    		<option><p>Bug</p></option>
+		    		<option><p>Task</p></option>
+		    	</select>
+		    	<br><p>Assignee:</p><br>
+		    	<div class="autocomplete">
+		    	<input type="text" id="u_assignee" placeholder="Enter an existent user name"></div>
+		    	<br><p>Description:</p><br>
+		    	<input type="text" id="u_issuedesc">
+		    	<br><p>Comments:</p><br>
+		    	<input type="text" name="commentz" id="u_issuecom">
+		    	<button type="button" class="butt" id="u_updateissue">Update</button>
 		    </form>
 		  </div>
 		</div>
@@ -62,6 +85,22 @@
 		<br>
 		<div id="PreviousSprints">
 			<button class="butt" id="prev" type="button" onclick="sendToPreviousSprints()">See Previous Sprints</button>
+		</div>
+		<div id="NextSprints">
+			<button class="butt" id="prev" type="button" onclick="sendToNextSprints()">See Next Sprints</button>
+		</div>
+	</div>
+	<div id="filter">
+		<div class="autocomplete">
+		<br><br>You can either filter out by Status, by just typing it in the textbox. You can filter the sprints by name in the Overview section.
+		<br>
+		<input type="text" id="filtername">
+		</div>
+		<br>
+		<br>
+		<button type="button" class="butt" id="filtbutt" onclick="findelemnts()">Submit filter</button>
+		<div id="showfilters">
+			
 		</div>
 	</div>
 </body>
